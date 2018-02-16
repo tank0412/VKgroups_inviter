@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VkNet;
+using VkNet.Enums.Filters;
+using Microsoft.VisualBasic;
 
 namespace PracticaWPF
 {
@@ -28,29 +31,49 @@ namespace PracticaWPF
         }
         private void Button_Begin(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Have not implemented yet!");
             Begin(sender1, sender2);
         }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //TextBox textBox = (TextBox)sender;
             sender1 = sender;
-            //MessageBox.Show(textBox.Text);
         }
         private void PasswordBox_TextChanged(object sender, RoutedEventArgs args)
         {
-            //PasswordBox PasswordBox = (PasswordBox)sender;
             sender2 = sender;
-            //MessageBox.Show(PasswordBox.Password);
         }
         private void Begin(object sender1, object sender2)
         {
-            // MessageBox.Show("Have not implemented yet!");
             TextBox textBox = (TextBox)sender1;
             PasswordBox PasswordBox = (PasswordBox)sender2;
-            MessageBox.Show(textBox.Text);
-            MessageBox.Show(PasswordBox.Password);
+            VkAuth(textBox, PasswordBox);
 
+        }
+        public void VkAuth(TextBox textBox, PasswordBox PasswordBox) {
+            Func<string> code = () =>
+            {
+               // MessageBox.Show("Please enter code: ");
+                string value = Microsoft.VisualBasic.Interaction.InputBox("Please enter code:", "Code Request", "Enter code there");
+                //string value = Console.ReadLine();
+                MessageBox.Show(value);
+                return value;
+            };
+
+            ulong appID = 6374736;
+            var vk = new VkApi();
+            Settings scope = Settings.Friends;
+            vk.Authorize(new ApiAuthParams {
+                ApplicationId = appID,
+                Login = textBox.Text,
+                Password = PasswordBox.Password,
+                Settings = Settings.All,
+                TwoFactorAuthorization = code
+            }
+            );
+            MessageBox.Show(Convert.ToString(vk.UserId.Value));
+            //var records = vk.Audio.Get(vk.UserId.Value); // получаем список треков текущего пользователя
+            //var records = vk.Audio.Get
+
+            //MessageBox.Show("Records count: " + records.Count);
         }
     }
 }
