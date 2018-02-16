@@ -1,0 +1,23 @@
+﻿<Window x:Class="PracticaWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PracticaWPF"
+        mc:Ignorable="d"
+        Title="Автоматическое приглашения людей в сообщества vk" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="235*"/>
+            <ColumnDefinition Width="237*"/>
+            <ColumnDefinition Width="45*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Height="30" Margin="43,57,142.216,232">Логин</TextBlock>
+        <TextBox Name="Login" Grid.Column="0" Height="20" FontSize="10" Margin="115,57,41,242" RenderTransformOrigin="0.676,1.312" TextChanged="TextBox_TextChanged"></TextBox>
+        <TextBlock Grid.Column="0" Height="30" Margin="43,87,142.216,202">Пароль</TextBlock>
+        <StackPanel>
+            <PasswordBox PasswordChar="*" MinHeight="20" HorizontalAlignment="Left" Height="15" Width="79" Margin="115,87,0,212" RenderTransformOrigin="0.574,0.603" PasswordChanged="PasswordBox_TextChanged" />
+        </StackPanel>
+        <Button Grid.Column="0" Width="111" Margin="0,170,187,118" Click="Button_Begin" HorizontalAlignment="Right" Grid.ColumnSpan="2">Войти</Button>
+    </Grid>
+</Window>
