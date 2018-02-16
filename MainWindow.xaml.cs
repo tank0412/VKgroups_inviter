@@ -51,14 +51,12 @@ namespace PracticaWPF
         public void VkAuth(TextBox textBox, PasswordBox PasswordBox) {
             Func<string> code = () =>
             {
-               // MessageBox.Show("Please enter code: ");
                 string value = Microsoft.VisualBasic.Interaction.InputBox("Please enter code:", "Code Request", "Enter code there");
-                //string value = Console.ReadLine();
                 MessageBox.Show(value);
                 return value;
             };
 
-            ulong appID = 6374736;
+            ulong appID = 6374736; // ID приложения, созданного в https://vk.com/apps
             var vk = new VkApi();
             Settings scope = Settings.Friends;
             vk.Authorize(new ApiAuthParams {
