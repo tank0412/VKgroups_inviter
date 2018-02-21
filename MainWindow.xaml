@@ -18,6 +18,8 @@
         <StackPanel>
             <PasswordBox PasswordChar="*" MinHeight="20" HorizontalAlignment="Left" Height="15" Width="79" Margin="115,87,0,212" RenderTransformOrigin="0.574,0.603" PasswordChanged="PasswordBox_TextChanged" />
         </StackPanel>
+        <TextBlock Grid.Column="0" Height="30" Margin="67,253,83,36">Ключ Antigtate</TextBlock>
+        <TextBox Name="Antigate_key" Grid.Column="0" Height="20" FontSize="10" Margin="187,253,31,46" RenderTransformOrigin="0.676,1.312" TextChanged="TextBox_TextChanged_Antigate" Grid.ColumnSpan="2"></TextBox>
         <Button Grid.Column="0" Width="111" Margin="0,170,187,118" Click="Button_Begin" HorizontalAlignment="Right" Grid.ColumnSpan="2">Войти</Button>
     </Grid>
 </Window>

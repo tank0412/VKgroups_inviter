@@ -25,6 +25,7 @@ namespace PracticaWPF
     {
         object sender1;
         object sender2;
+        object sender_antigate;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +37,10 @@ namespace PracticaWPF
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             sender1 = sender;
+        }
+        private void TextBox_TextChanged_Antigate(object sender, TextChangedEventArgs e)
+        {
+            sender_antigate = sender;
         }
         private void PasswordBox_TextChanged(object sender, RoutedEventArgs args)
         {
@@ -49,6 +54,8 @@ namespace PracticaWPF
 
         }
         public void VkAuth(TextBox textBox, PasswordBox PasswordBox) {
+            long groupid = 162108760;  //https://vk.com/club162108760
+            long userid = 451472350; //https://vk.com/id451472350
             Func<string> code = () =>
             {
                 string value = Microsoft.VisualBasic.Interaction.InputBox("Please enter code:", "Code Request", "Enter code there");
@@ -68,6 +75,21 @@ namespace PracticaWPF
             }
             );
             MessageBox.Show(Convert.ToString(vk.UserId.Value));
+
+           // vk.Groups.Invite(groupid, userid);
+            try
+            {
+                vk.Groups.Invite(groupid, userid);
+            }
+            catch (VkNet.Exception.AccessDeniedException e)
+            {
+                MessageBox.Show("Access denied: ");
+            }
+            catch (VkNet.Exception.CannotBlacklistYourselfException e)
+            {
+                MessageBox.Show("Access denied: user should be friend");
+            }
+
             //var records = vk.Audio.Get(vk.UserId.Value); // получаем список треков текущего пользователя
             //var records = vk.Audio.Get
 
