@@ -25,7 +25,8 @@ namespace PracticaWPF
     {
         object sender1;
         object sender_antigate;
-        int N;
+        object sender_Group_ID;
+        long GroupID;
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +44,10 @@ namespace PracticaWPF
         private void TextBox_TextChanged_Antigate(object sender, TextChangedEventArgs e)
         {
             sender_antigate = sender;
+        }
+        private void TextBox_TextChanged_Group_ID(object sender, TextChangedEventArgs e)
+        {
+            sender_Group_ID = sender;
         }
         private void Begin(object sender1)
         {
@@ -71,13 +76,20 @@ namespace PracticaWPF
             }
 
         }
-        public void VkAuth(string login, string password, ulong ID ) {
-            long groupid = 162108760;  //https://vk.com/club162108760
+        public void VkAuth(string login, string password, ulong ID) {
+            if (sender_Group_ID is null) {
+                MessageBox.Show("Значение Group ID не было введено! ");
+                return;
+            }
+            TextBox textbox = (TextBox)sender_Group_ID;
+            GroupID = Convert.ToInt64(textbox.Text);
+
+            //long groupid = 162108760;  //https://vk.com/club162108760
             long userid = 451472350; //https://vk.com/id451472350
             Func<string> code = () =>
             {
                 string value = Microsoft.VisualBasic.Interaction.InputBox("Please enter code:", "Code Request", "Enter code there");
-                MessageBox.Show(value);
+                //MessageBox.Show(value);
                 return value;
             };
 
@@ -95,7 +107,7 @@ namespace PracticaWPF
            // MessageBox.Show(Convert.ToString(vk.UserId.Value));
             try
             {
-                vk.Groups.Invite(groupid, userid);
+                vk.Groups.Invite(GroupID, userid);
             }
             catch (VkNet.Exception.AccessDeniedException e)
             {
