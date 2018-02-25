@@ -24,36 +24,54 @@ namespace PracticaWPF
     public partial class MainWindow : Window
     {
         object sender1;
-        object sender2;
         object sender_antigate;
+        int N;
         public MainWindow()
         {
             InitializeComponent();
         }
         private void Button_Begin(object sender, RoutedEventArgs e)
         {
-            Begin(sender1, sender2);
+            Begin(sender1);
         }
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            RichTextBox textBox = (RichTextBox)sender1;
             sender1 = sender;
+
         }
         private void TextBox_TextChanged_Antigate(object sender, TextChangedEventArgs e)
         {
             sender_antigate = sender;
         }
-        private void PasswordBox_TextChanged(object sender, RoutedEventArgs args)
+        private void Begin(object sender1)
         {
-            sender2 = sender;
-        }
-        private void Begin(object sender1, object sender2)
-        {
-            TextBox textBox = (TextBox)sender1;
-            PasswordBox PasswordBox = (PasswordBox)sender2;
-            VkAuth(textBox, PasswordBox);
+            int i = 0;
+            String[] Auth = new string[3];
+            RichTextBox richtextBox = (RichTextBox)sender1;
+            TextRange textRange = new TextRange(richtextBox.Document.ContentStart, richtextBox.Document.ContentEnd);
+            string data = textRange.Text;
+            String[] substrings = data.Split('\n');
+            String[] substrings2 = data.Split(':');
+            foreach (var substring in substrings)
+            {
+                //MessageBox.Show(substring);
+                String[] line = substring.Split(':');
+                foreach (var substring2 in line)
+                {
+                   // MessageBox.Show(substring2);
+                    Auth[i] = substring2;
+                    i++;
+                }
+                i = 0;
+                if (Auth[0] != "")
+                VkAuth(Auth[0], Auth[1], Convert.ToUInt64(Auth[2]));
+                Array.Clear(Auth, 0, Auth.Length);
+
+            }
 
         }
-        public void VkAuth(TextBox textBox, PasswordBox PasswordBox) {
+        public void VkAuth(string login, string password, ulong ID ) {
             long groupid = 162108760;  //https://vk.com/club162108760
             long userid = 451472350; //https://vk.com/id451472350
             Func<string> code = () =>
@@ -63,20 +81,18 @@ namespace PracticaWPF
                 return value;
             };
 
-            ulong appID = 6374736; // ID приложения, созданного в https://vk.com/apps
+            ulong appID = ID; // ID приложения, созданного в https://vk.com/apps
             var vk = new VkApi();
             Settings scope = Settings.Friends;
             vk.Authorize(new ApiAuthParams {
                 ApplicationId = appID,
-                Login = textBox.Text,
-                Password = PasswordBox.Password,
+                Login = login,
+                Password = password,
                 Settings = Settings.All,
                 TwoFactorAuthorization = code
             }
             );
-            MessageBox.Show(Convert.ToString(vk.UserId.Value));
-
-           // vk.Groups.Invite(groupid, userid);
+           // MessageBox.Show(Convert.ToString(vk.UserId.Value));
             try
             {
                 vk.Groups.Invite(groupid, userid);
@@ -89,11 +105,7 @@ namespace PracticaWPF
             {
                 MessageBox.Show("Access denied: user should be friend");
             }
-
-            //var records = vk.Audio.Get(vk.UserId.Value); // получаем список треков текущего пользователя
-            //var records = vk.Audio.Get
-
-            //MessageBox.Show("Records count: " + records.Count);
         }
+
     }
 }

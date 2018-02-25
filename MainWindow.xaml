@@ -12,12 +12,17 @@
             <ColumnDefinition Width="237*"/>
             <ColumnDefinition Width="45*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Height="30" Margin="43,57,142.216,232">Логин</TextBlock>
-        <TextBox Name="Login" Grid.Column="0" Height="20" FontSize="10" Margin="115,57,41,242" RenderTransformOrigin="0.676,1.312" TextChanged="TextBox_TextChanged"></TextBox>
-        <TextBlock Grid.Column="0" Height="30" Margin="43,87,142.216,202">Пароль</TextBlock>
-        <StackPanel>
-            <PasswordBox PasswordChar="*" MinHeight="20" HorizontalAlignment="Left" Height="15" Width="79" Margin="115,87,0,212" RenderTransformOrigin="0.574,0.603" PasswordChanged="PasswordBox_TextChanged" />
-        </StackPanel>
+        <RichTextBox Margin="10,10,31,215" TextChanged="RichTextBox_TextChanged" Grid.ColumnSpan="2">
+            <FlowDocument>
+                <Paragraph FontSize="20">Введите login:password:id</Paragraph>
+            </FlowDocument>
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+
         <TextBlock Grid.Column="0" Height="30" Margin="67,253,83,36">Ключ Antigtate</TextBlock>
         <TextBox Name="Antigate_key" Grid.Column="0" Height="20" FontSize="10" Margin="187,253,31,46" RenderTransformOrigin="0.676,1.312" TextChanged="TextBox_TextChanged_Antigate" Grid.ColumnSpan="2"></TextBox>
         <Button Grid.Column="0" Width="111" Margin="0,170,187,118" Click="Button_Begin" HorizontalAlignment="Right" Grid.ColumnSpan="2">Войти</Button>
