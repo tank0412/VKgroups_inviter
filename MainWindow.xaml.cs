@@ -143,8 +143,9 @@ namespace PracticaWPF
 
                 PictureBox1.ImageLocation = captchaUrl;
 
-                System.Windows.Controls.TextBox textBox = (System.Windows.Controls.TextBox)sender_antigate;
-                string captchaKey = textBox.Text;
+                //System.Windows.Controls.TextBox textBox = (System.Windows.Controls.TextBox)sender_antigate;
+
+                string captchaKey = Microsoft.VisualBasic.Interaction.InputBox("Please enter captcha code:", "Captcha Code Request", "Enter captcha code there");
             }
         }
 
