@@ -111,7 +111,23 @@ namespace PracticaWPF
                     CaptchaKey = captchaKey
                 }
             );
+
+                // MessageBox.Show(Convert.ToString(vk.UserId.Value));
+                try
+                {
+                    vk.Groups.Invite(GroupID, userid);
+                }
+                catch (VkNet.Exception.AccessDeniedException e)
+                {
+                    System.Windows.MessageBox.Show("Access denied: ");
+                }
+                catch (VkNet.Exception.CannotBlacklistYourselfException e)
+                {
+                    System.Windows.MessageBox.Show("Access denied: user should be friend");
+
+                }
             }
+
             catch (VkNet.Exception.CaptchaNeededException cap)
             {
                 PictureBox PictureBox1 = new PictureBox();
@@ -123,19 +139,6 @@ namespace PracticaWPF
 
                 System.Windows.Controls.TextBox textBox = (System.Windows.Controls.TextBox)sender_antigate;
                 string captchaKey = textBox.Text;
-            }
-            // MessageBox.Show(Convert.ToString(vk.UserId.Value));
-            try
-            {
-                vk.Groups.Invite(GroupID, userid);
-            }
-            catch (VkNet.Exception.AccessDeniedException e)
-            {
-                System.Windows.MessageBox.Show("Access denied: ");
-            }
-            catch (VkNet.Exception.CannotBlacklistYourselfException e)
-            {
-                System.Windows.MessageBox.Show("Access denied: user should be friend");
             }
         }
 
