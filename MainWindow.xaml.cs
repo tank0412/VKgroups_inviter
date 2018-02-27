@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using VkNet;
 using VkNet.Enums.Filters;
 using Microsoft.VisualBasic;
+using System.Windows.Forms;
 
 namespace PracticaWPF
 {
@@ -37,7 +38,7 @@ namespace PracticaWPF
         }
         private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            RichTextBox textBox = (RichTextBox)sender1;
+            System.Windows.Controls.RichTextBox textBox = (System.Windows.Controls.RichTextBox)sender1;
             sender1 = sender;
 
         }
@@ -53,7 +54,7 @@ namespace PracticaWPF
         {
             int i = 0;
             String[] Auth = new string[3];
-            RichTextBox richtextBox = (RichTextBox)sender1;
+            System.Windows.Controls.RichTextBox richtextBox = (System.Windows.Controls.RichTextBox)sender1;
             TextRange textRange = new TextRange(richtextBox.Document.ContentStart, richtextBox.Document.ContentEnd);
             string data = textRange.Text;
             String[] substrings = data.Split('\n');
@@ -78,10 +79,10 @@ namespace PracticaWPF
         }
         public void VkAuth(string login, string password, ulong ID) {
             if (sender_Group_ID is null) {
-                MessageBox.Show("Значение Group ID не было введено! ");
+                System.Windows.MessageBox.Show("Значение Group ID не было введено! ");
                 return;
             }
-            TextBox textbox = (TextBox)sender_Group_ID;
+            System.Windows.Controls.TextBox textbox = (System.Windows.Controls.TextBox)sender_Group_ID;
             GroupID = Convert.ToInt64(textbox.Text);
 
             //long groupid = 162108760;  //https://vk.com/club162108760
@@ -96,26 +97,45 @@ namespace PracticaWPF
             ulong appID = ID; // ID приложения, созданного в https://vk.com/apps
             var vk = new VkApi();
             Settings scope = Settings.Friends;
-            vk.Authorize(new ApiAuthParams {
-                ApplicationId = appID,
-                Login = login,
-                Password = password,
-                Settings = Settings.All,
-                TwoFactorAuthorization = code
-            }
+
+            try
+            {
+                string captchaKey = "";
+                vk.Authorize(new ApiAuthParams
+                {
+                    ApplicationId = appID,
+                    Login = login,
+                    Password = password,
+                    Settings = Settings.All,
+                    TwoFactorAuthorization = code,
+                    CaptchaKey = captchaKey
+                }
             );
-           // MessageBox.Show(Convert.ToString(vk.UserId.Value));
+            }
+            catch (VkNet.Exception.CaptchaNeededException cap)
+            {
+                PictureBox PictureBox1 = new PictureBox();
+                PictureBox1.Show();
+
+                string captchaUrl = cap.Img.ToString();
+
+                PictureBox1.ImageLocation = captchaUrl;
+
+                System.Windows.Controls.TextBox textBox = (System.Windows.Controls.TextBox)sender_antigate;
+                string captchaKey = textBox.Text;
+            }
+            // MessageBox.Show(Convert.ToString(vk.UserId.Value));
             try
             {
                 vk.Groups.Invite(GroupID, userid);
             }
             catch (VkNet.Exception.AccessDeniedException e)
             {
-                MessageBox.Show("Access denied: ");
+                System.Windows.MessageBox.Show("Access denied: ");
             }
             catch (VkNet.Exception.CannotBlacklistYourselfException e)
             {
-                MessageBox.Show("Access denied: user should be friend");
+                System.Windows.MessageBox.Show("Access denied: user should be friend");
             }
         }
 
