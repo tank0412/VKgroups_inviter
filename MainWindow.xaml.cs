@@ -85,8 +85,6 @@ namespace PracticaWPF
             System.Windows.Controls.TextBox textbox = (System.Windows.Controls.TextBox)sender_Group_ID;
             GroupID = Convert.ToInt64(textbox.Text);
 
-            //long groupid = 162108760;  //https://vk.com/club162108760
-            long userid = 451472350; //https://vk.com/id451472350
             Func<string> code = () =>
             {
                 string value = Microsoft.VisualBasic.Interaction.InputBox("Please enter code:", "Code Request", "Enter code there");
