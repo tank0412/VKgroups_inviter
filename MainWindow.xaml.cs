@@ -112,10 +112,17 @@ namespace PracticaWPF
                 }
             );
 
-                // MessageBox.Show(Convert.ToString(vk.UserId.Value));
                 try
                 {
-                    vk.Groups.Invite(GroupID, userid);
+                    var users = vk.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams
+                    {
+                    });
+                    List<VkNet.Model.User> IDs = users.ToList();
+                    foreach (VkNet.Model.User id in IDs)
+                    {
+                        vk.Groups.Invite(GroupID, id.Id);
+                        //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
+                    }
                 }
                 catch (VkNet.Exception.AccessDeniedException e)
                 {
