@@ -112,6 +112,7 @@ namespace PracticaWPF
 
                 try
                 {
+                    long captchaSid = 0;
                     var users = vk.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams
                     {
                     });
@@ -119,7 +120,7 @@ namespace PracticaWPF
                     foreach (VkNet.Model.User id in IDs)
                     {
                         System.Threading.Thread.Sleep(5000);
-                        vk.Groups.Invite(GroupID, id.Id);
+                        vk.Groups.Invite(GroupID, id.Id, captchaSid, captchaKey);
                         //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
                     }
                 }
@@ -140,6 +141,7 @@ namespace PracticaWPF
                 PictureBox1.Show();
 
                 string captchaUrl = cap.Img.ToString();
+
 
                 PictureBox1.ImageLocation = captchaUrl;
 
