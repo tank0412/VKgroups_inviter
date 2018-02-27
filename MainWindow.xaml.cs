@@ -118,6 +118,7 @@ namespace PracticaWPF
                     List<VkNet.Model.User> IDs = users.ToList();
                     foreach (VkNet.Model.User id in IDs)
                     {
+                        System.Threading.Thread.Sleep(5000);
                         vk.Groups.Invite(GroupID, id.Id);
                         //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
                     }
