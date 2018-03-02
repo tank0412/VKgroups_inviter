@@ -94,8 +94,7 @@ namespace PracticaWPF
 
             ulong appID = ID; // ID приложения, созданного в https://vk.com/apps
             var vk = new VkApi();
-            Settings scope = Settings.Friends;
-
+            long captchaSid = 0;
             try
             {
                 string captchaKey = "";
@@ -112,7 +111,6 @@ namespace PracticaWPF
 
                 try
                 {
-                    long captchaSid = 0;
                     var users = vk.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams
                     {
                     });
@@ -141,7 +139,7 @@ namespace PracticaWPF
                 PictureBox1.Show();
 
                 string captchaUrl = cap.Img.ToString();
-
+                captchaSid = cap.Sid;
 
                 PictureBox1.ImageLocation = captchaUrl;
 
