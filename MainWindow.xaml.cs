@@ -16,6 +16,8 @@ using VkNet;
 using VkNet.Enums.Filters;
 using Microsoft.VisualBasic;
 using System.Windows.Forms;
+using Anticaptcha_example.Api;
+using Anticaptcha_example.Helper;
 
 namespace PracticaWPF
 {
@@ -36,6 +38,10 @@ namespace PracticaWPF
         {
             Begin(sender1);
         }
+        private void GetAntigateBalance_Button(object sender, RoutedEventArgs e)
+        {
+            GetAntigateBalance();
+        }
         private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             System.Windows.Controls.RichTextBox textBox = (System.Windows.Controls.RichTextBox)sender1;
@@ -49,6 +55,25 @@ namespace PracticaWPF
         private void TextBox_TextChanged_Group_ID(object sender, TextChangedEventArgs e)
         {
             sender_Group_ID = sender;
+        }
+        private void GetAntigateBalance() {
+            if (sender_antigate is null)
+            {
+                System.Windows.MessageBox.Show("Значение ключа Antigate не было введено! ");
+                return;
+            }
+            System.Windows.Controls.TextBox textbox = (System.Windows.Controls.TextBox)sender_antigate;
+            var api = new ImageToText
+            {
+                ClientKey = textbox.Text
+            };
+
+            var balance = api.GetBalance();
+
+            if (balance == null)
+                System.Windows.MessageBox.Show("GetBalance() failed. " + api.ErrorMessage);
+            else
+                System.Windows.MessageBox.Show("Balance: " + balance);
         }
         private void Begin(object sender1)
         {
@@ -73,8 +98,7 @@ namespace PracticaWPF
                 if (Auth[0] != "")
                 VkAuth(Auth[0], Auth[1], Convert.ToUInt64(Auth[2]));
                 Array.Clear(Auth, 0, Auth.Length);
-
-            }
+        }
 
 
 
