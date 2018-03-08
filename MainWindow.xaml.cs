@@ -76,6 +76,8 @@ namespace PracticaWPF
 
             }
 
+
+
         }
         public void VkAuth(string login, string password, ulong ID) {
             if (sender_Group_ID is null) {
