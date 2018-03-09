@@ -114,7 +114,16 @@ namespace PracticaWPF
                 }
                 i = 0;
                 if (Auth[0] != "")
-                VkAuth(Auth[0], Auth[1], Convert.ToUInt64(Auth[2]));
+                {
+                    try
+                    {
+                        VkAuth(Auth[0], Auth[1], Convert.ToUInt64(Auth[2]));
+                    }
+                    catch (System.FormatException)
+                    {
+                        System.Windows.MessageBox.Show("Входная строка имела неверный формат.");
+                    }
+                }
                 Array.Clear(Auth, 0, Auth.Length);
         }
 
