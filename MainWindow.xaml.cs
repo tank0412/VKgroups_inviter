@@ -40,7 +40,10 @@ namespace PracticaWPF
         }
         private void GetAntigateBalance_Button(object sender, RoutedEventArgs e)
         {
-            GetAntigateBalance();
+            if (GetAntigateBalance() == null)
+                System.Windows.MessageBox.Show("GetAntigateBalance() failed. ");
+            else
+                System.Windows.MessageBox.Show("Balance: " + GetAntigateBalance());
         }
         private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -56,11 +59,11 @@ namespace PracticaWPF
         {
             sender_Group_ID = sender;
         }
-        private void GetAntigateBalance() {
+        private double? GetAntigateBalance() {
             if (sender_antigate is null)
             {
                 System.Windows.MessageBox.Show("Значение ключа Antigate не было введено! ");
-                return;
+                return null;
             }
             System.Windows.Controls.TextBox textbox = (System.Windows.Controls.TextBox)sender_antigate;
             var api = new ImageToText
@@ -69,11 +72,7 @@ namespace PracticaWPF
             };
 
             var balance = api.GetBalance();
-
-            if (balance == null)
-                System.Windows.MessageBox.Show("GetBalance() failed. " + api.ErrorMessage);
-            else
-                System.Windows.MessageBox.Show("Balance: " + balance);
+            return balance;
         }
         private void Begin(object sender1)
         {
@@ -181,6 +180,12 @@ namespace PracticaWPF
                     System.Windows.MessageBox.Show("Значение ключа Antigate не было введено! Не возможно отправить капчу на Antigate! ");
                     return;
                 }
+                if (GetAntigateBalance() == 0)
+                {
+                    System.Windows.MessageBox.Show("Нет средств на балансе Antigate");
+                    return;
+                }
+
                 System.Windows.Controls.TextBox textbox2 = (System.Windows.Controls.TextBox)sender_antigate;
                 var api = new ImageToText
                 {
