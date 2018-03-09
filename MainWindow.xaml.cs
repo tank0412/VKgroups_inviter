@@ -161,6 +161,8 @@ namespace PracticaWPF
 
             catch (VkNet.Exception.CaptchaNeededException cap)
             {
+                /*
+
                 PictureBox PictureBox1 = new PictureBox();
                 PictureBox1.Show();
 
@@ -172,6 +174,28 @@ namespace PracticaWPF
                 //System.Windows.Controls.TextBox textBox = (System.Windows.Controls.TextBox)sender_antigate;
 
                 string captchaKey = Microsoft.VisualBasic.Interaction.InputBox("Please enter captcha code:", "Captcha Code Request", "Enter captcha code there");
+                */
+                captchaSid = cap.Sid;
+                if (sender_antigate is null)
+                {
+                    System.Windows.MessageBox.Show("Значение ключа Antigate не было введено! Не возможно отправить капчу на Antigate! ");
+                    return;
+                }
+                System.Windows.Controls.TextBox textbox2 = (System.Windows.Controls.TextBox)sender_antigate;
+                var api = new ImageToText
+                {
+                    ClientKey = textbox2.Text,
+                    FilePath = cap.Img.ToString()
+                };
+                if (!api.CreateTask())
+                    System.Windows.MessageBox.Show("API v2 send failed. " + api.ErrorMessage);
+                else if (!api.WaitForResult())
+                    System.Windows.MessageBox.Show("Could not solve the captcha.");
+                else
+                {
+                    //System.Windows.MessageBox.Show("Result: " + api.GetTaskSolution().Text);
+                    string captchaUrl = api.GetTaskSolution().Text;
+                }
             }
         }
 
