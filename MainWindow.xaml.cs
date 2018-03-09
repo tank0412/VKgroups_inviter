@@ -30,6 +30,14 @@ namespace PracticaWPF
         object sender_antigate;
         object sender_Group_ID;
         long GroupID;
+        int SuccessfulInvitesCount = 0;
+        int UnsuccessfulInvitesCount = 0;
+        int SuccessfulLogin = 0;
+        int UnsuccessfulLogin = 0;
+        int SuccessfulCaptcha = 0;
+        int UnsuccessfulCaptcha = 0;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,6 +52,17 @@ namespace PracticaWPF
                 System.Windows.MessageBox.Show("GetAntigateBalance() failed. ");
             else
                 System.Windows.MessageBox.Show("Balance: " + GetAntigateBalance());
+        }
+        private void GetProgress_Button(object sender, RoutedEventArgs e)
+        {
+                System.Windows.MessageBox.Show
+                     ("Число успешных приглашений: " + Convert.ToString(SuccessfulInvitesCount) + "\n"
+                    + "Число неуспешных приглашений: " + Convert.ToString(UnsuccessfulInvitesCount) + "\n"
+                    + "Число успешных авторизаций: " + Convert.ToString(SuccessfulLogin) + "\n"
+                    + "Число неуспешных авторизаций: " + Convert.ToString(UnsuccessfulLogin) + "\n"
+                    + "Число успешных разгадок капчи: " + Convert.ToString(UnsuccessfulLogin) + "\n"
+                    + "Число неуспешных разгадок капчи: " + Convert.ToString(UnsuccessfulCaptcha) + "\n"
+                    );
         }
         private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -120,22 +139,32 @@ namespace PracticaWPF
             ulong appID = ID; // ID приложения, созданного в https://vk.com/apps
             var vk = new VkApi();
             long captchaSid = 0;
+            string captchaKey = "";
             try
             {
-                string captchaKey = "";
-                vk.Authorize(new ApiAuthParams
+                try
                 {
-                    ApplicationId = appID,
-                    Login = login,
-                    Password = password,
-                    Settings = Settings.All,
-                    TwoFactorAuthorization = code,
-                    CaptchaKey = captchaKey
+                    vk.Authorize(new ApiAuthParams
+                    {
+                        ApplicationId = appID,
+                        Login = login,
+                        Password = password,
+                        Settings = Settings.All,
+                        TwoFactorAuthorization = code,
+                        CaptchaKey = captchaKey
+                    }
+                );
                 }
-            );
+                catch (VkNet.Exception.VkApiException)
+                {
+                    UnsuccessfulLogin++;
+                    System.Windows.MessageBox.Show("Неуспешная авторизация!");
+                    return;
+                }
 
                 try
                 {
+                    SuccessfulLogin++;
                     var users = vk.Friends.Get(new VkNet.Model.RequestParams.FriendsGetParams
                     {
                     });
@@ -143,6 +172,7 @@ namespace PracticaWPF
                     foreach (VkNet.Model.User id in IDs)
                     {
                         System.Threading.Thread.Sleep(5000);
+                        SuccessfulInvitesCount++;
                         vk.Groups.Invite(GroupID, id.Id, captchaSid, captchaKey);
                         //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
                     }
@@ -150,10 +180,14 @@ namespace PracticaWPF
                 catch (VkNet.Exception.AccessDeniedException e)
                 {
                     System.Windows.MessageBox.Show("Access denied: ");
+                    UnsuccessfulInvitesCount++;
+                    SuccessfulInvitesCount--;
                 }
                 catch (VkNet.Exception.CannotBlacklistYourselfException e)
                 {
                     System.Windows.MessageBox.Show("Access denied: user should be friend");
+                    UnsuccessfulInvitesCount++;
+                    SuccessfulInvitesCount--;
 
                 }
             }
@@ -193,13 +227,21 @@ namespace PracticaWPF
                     FilePath = cap.Img.ToString()
                 };
                 if (!api.CreateTask())
+                {
                     System.Windows.MessageBox.Show("API v2 send failed. " + api.ErrorMessage);
+                    UnsuccessfulCaptcha++;
+
+                }
                 else if (!api.WaitForResult())
+                {
                     System.Windows.MessageBox.Show("Could not solve the captcha.");
+                    UnsuccessfulCaptcha++;
+                }
                 else
                 {
                     //System.Windows.MessageBox.Show("Result: " + api.GetTaskSolution().Text);
                     string captchaUrl = api.GetTaskSolution().Text;
+                    SuccessfulCaptcha++;
                 }
             }
         }
