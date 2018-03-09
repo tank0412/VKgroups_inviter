@@ -36,7 +36,7 @@ namespace PracticaWPF
         int UnsuccessfulLogin = 0;
         int SuccessfulCaptcha = 0;
         int UnsuccessfulCaptcha = 0;
-
+        Boolean TwoFactorAuthorization = true;
 
         public MainWindow()
         {
@@ -77,6 +77,15 @@ namespace PracticaWPF
         private void TextBox_TextChanged_Group_ID(object sender, TextChangedEventArgs e)
         {
             sender_Group_ID = sender;
+        }
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            TwoFactorAuthorization = true;
+        }
+
+        private void checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TwoFactorAuthorization = false;
         }
         private double? GetAntigateBalance() {
             if (sender_antigate is null)
@@ -153,16 +162,30 @@ namespace PracticaWPF
             {
                 try
                 {
-                    vk.Authorize(new ApiAuthParams
+                    if (TwoFactorAuthorization == true)
                     {
-                        ApplicationId = appID,
-                        Login = login,
-                        Password = password,
-                        Settings = Settings.All,
-                        TwoFactorAuthorization = code,
-                        CaptchaKey = captchaKey
+                        vk.Authorize(new ApiAuthParams
+                        {
+                            ApplicationId = appID,
+                            Login = login,
+                            Password = password,
+                            Settings = Settings.All,
+                            TwoFactorAuthorization = code,
+                            CaptchaKey = captchaKey
+                        }
+                    );
                     }
-                );
+                    else {
+                        vk.Authorize(new ApiAuthParams
+                        {
+                            ApplicationId = appID,
+                            Login = login,
+                            Password = password,
+                            Settings = Settings.All,
+                            CaptchaKey = captchaKey
+                        }
+);
+                    }
                 }
                 catch (VkNet.Exception.VkApiException)
                 {
@@ -170,6 +193,10 @@ namespace PracticaWPF
                     System.Windows.MessageBox.Show("Неуспешная авторизация!");
                     return;
                 }
+                /*
+                catch (System.InvalidOperationException)
+                 System.Windows.MessageBox.Show("Эта операция не поддерживается для относительных URI-адресов.");
+                 */
 
                 try
                 {
@@ -180,9 +207,9 @@ namespace PracticaWPF
                     List<VkNet.Model.User> IDs = users.ToList();
                     foreach (VkNet.Model.User id in IDs)
                     {
-                        System.Threading.Thread.Sleep(5000);
                         SuccessfulInvitesCount++;
                         vk.Groups.Invite(GroupID, id.Id, captchaSid, captchaKey);
+                        System.Threading.Thread.Sleep(5000);
                         //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
                     }
                 }
