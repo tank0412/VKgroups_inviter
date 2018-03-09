@@ -60,7 +60,7 @@ namespace PracticaWPF
                     + "Число неуспешных приглашений: " + Convert.ToString(UnsuccessfulInvitesCount) + "\n"
                     + "Число успешных авторизаций: " + Convert.ToString(SuccessfulLogin) + "\n"
                     + "Число неуспешных авторизаций: " + Convert.ToString(UnsuccessfulLogin) + "\n"
-                    + "Число успешных разгадок капчи: " + Convert.ToString(UnsuccessfulLogin) + "\n"
+                    + "Число успешных разгадок капчи: " + Convert.ToString(SuccessfulCaptcha) + "\n"
                     + "Число неуспешных разгадок капчи: " + Convert.ToString(UnsuccessfulCaptcha) + "\n"
                     );
         }
