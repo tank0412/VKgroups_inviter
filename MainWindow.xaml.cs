@@ -126,7 +126,7 @@ namespace PracticaWPF
                 {
                     try
                     {
-                        VkAuth(Auth[0], Auth[1], Convert.ToUInt64(Auth[2]));
+                        VkAuth(Auth[0], Auth[1]);
                     }
                     catch (System.FormatException)
                     {
@@ -139,7 +139,7 @@ namespace PracticaWPF
 
 
         }
-        public void VkAuth(string login, string password, ulong ID) {
+        public void VkAuth(string login, string password) {
             if (sender_Group_ID is null) {
                 System.Windows.MessageBox.Show("Значение Group ID не было введено! ");
                 return;
@@ -154,7 +154,7 @@ namespace PracticaWPF
                 return value;
             };
 
-            ulong appID = ID; // ID приложения, созданного в https://vk.com/apps
+            ulong appID = 2890984; // Используем официальное приложение VK для получения access token
             var vk = new VkApi();
             long captchaSid = 0;
             string captchaKey = "";
@@ -209,7 +209,7 @@ namespace PracticaWPF
                     {
                         SuccessfulInvitesCount++;
                         vk.Groups.Invite(GroupID, id.Id, captchaSid, captchaKey);
-                        System.Threading.Thread.Sleep(5000);
+                        //System.Threading.Thread.Sleep(5000);
                         //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
                     }
                 }

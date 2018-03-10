@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <RichTextBox Margin="41,10,0,215" TextChanged="RichTextBox_TextChanged" Grid.ColumnSpan="2">
             <FlowDocument>
-                <Paragraph FontSize="20">Введите login:password:vk_app_id</Paragraph>
+                <Paragraph FontSize="20">Введите login:password</Paragraph>
             </FlowDocument>
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
