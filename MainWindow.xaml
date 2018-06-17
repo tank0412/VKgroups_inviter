@@ -26,7 +26,7 @@
         <TextBox Name="Group_ID" Grid.Column="0" Height="20" FontSize="10" Margin="175,205,43,94" RenderTransformOrigin="0.676,1.312" TextChanged="TextBox_TextChanged_Group_ID" Grid.ColumnSpan="2"></TextBox>
         <TextBlock Grid.Column="0" Height="30" Margin="59,235,91,54">Ключ Antigtate</TextBlock>
         <TextBox Name="Antigate_key" Grid.Column="0" Height="20" FontSize="10" Margin="175,235,43,64" RenderTransformOrigin="0.676,1.312" TextChanged="TextBox_TextChanged_Antigate" Grid.ColumnSpan="2"></TextBox>
-        <Button Grid.Column="0" Width="111" Margin="0,120,153,168" Click="Button_Begin" HorizontalAlignment="Right" Grid.ColumnSpan="2">Войти</Button>
+        <Button Grid.Column="0" Width="111" Margin="0,120,153,168" Click="Button_Begin" HorizontalAlignment="Right" Grid.ColumnSpan="2">Пригласить</Button>
         <Button Grid.Column="0" Width="185" Margin="0,272,88,22" Click="GetAntigateBalance_Button" HorizontalAlignment="Right" Grid.ColumnSpan="2">Получить баланс Antigate</Button>
         <Button Grid.Column="0" Width="135" Margin="0,163,138,127" Click="GetProgress_Button" HorizontalAlignment="Right" Grid.ColumnSpan="2">Узнать прогресс</Button>
         <CheckBox x:Name="checkBox" IsChecked="True" Content="Use TwoFactorAuthorization"
