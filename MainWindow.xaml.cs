@@ -164,7 +164,7 @@ namespace PracticaWPF
                 {
                     if (TwoFactorAuthorization == true)
                     {
-                        vk.Authorize(new ApiAuthParams
+                        vk.Authorize(new VkNet.Model.ApiAuthParams
                         {
                             ApplicationId = appID,
                             Login = login,
@@ -176,7 +176,7 @@ namespace PracticaWPF
                     );
                     }
                     else {
-                        vk.Authorize(new ApiAuthParams
+                        vk.Authorize(new VkNet.Model.ApiAuthParams
                         {
                             ApplicationId = appID,
                             Login = login,
