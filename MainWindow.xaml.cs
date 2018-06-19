@@ -157,7 +157,8 @@ namespace PracticaWPF
             ulong appID = 2890984; // Используем официальное приложение VK для получения access token
             var vk = new VkApi();
             long captchaSid = 0;
-            string captchaKey = "";
+            string captchaAnswer = "";
+            long getuserid = 0;
             try
             {
                 try
@@ -171,7 +172,8 @@ namespace PracticaWPF
                             Password = password,
                             Settings = Settings.All,
                             TwoFactorAuthorization = code,
-                            CaptchaKey = captchaKey
+                            CaptchaKey = captchaAnswer,
+                            CaptchaSid = captchaSid
                         }
                     );
                     }
@@ -182,7 +184,8 @@ namespace PracticaWPF
                             Login = login,
                             Password = password,
                             Settings = Settings.All,
-                            CaptchaKey = captchaKey
+                            CaptchaKey = captchaAnswer,
+                            CaptchaSid = captchaSid
                         }
 );
                     }
@@ -207,8 +210,9 @@ namespace PracticaWPF
                     List<VkNet.Model.User> IDs = users.ToList();
                     foreach (VkNet.Model.User id in IDs)
                     {
+                        getuserid = id.Id;
+                        vk.Groups.Invite(GroupID, id.Id);
                         SuccessfulInvitesCount++;
-                        vk.Groups.Invite(GroupID, id.Id, captchaSid, captchaKey);
                         //System.Threading.Thread.Sleep(5000);
                         //System.Windows.MessageBox.Show(Convert.ToString(id.Id));
                     }
@@ -230,20 +234,6 @@ namespace PracticaWPF
 
             catch (VkNet.Exception.CaptchaNeededException cap)
             {
-                /*
-
-                PictureBox PictureBox1 = new PictureBox();
-                PictureBox1.Show();
-
-                string captchaUrl = cap.Img.ToString();
-                captchaSid = cap.Sid;
-
-                PictureBox1.ImageLocation = captchaUrl;
-
-                //System.Windows.Controls.TextBox textBox = (System.Windows.Controls.TextBox)sender_antigate;
-
-                string captchaKey = Microsoft.VisualBasic.Interaction.InputBox("Please enter captcha code:", "Captcha Code Request", "Enter captcha code there");
-                */
                 captchaSid = cap.Sid;
                 if (sender_antigate is null)
                 {
@@ -276,8 +266,9 @@ namespace PracticaWPF
                 else
                 {
                     //System.Windows.MessageBox.Show("Result: " + api.GetTaskSolution().Text);
-                    string captchaUrl = api.GetTaskSolution().Text;
+                    captchaAnswer = api.GetTaskSolution().Text;
                     SuccessfulCaptcha++;
+                    vk.Groups.Invite(GroupID, getuserid, captchaSid, captchaAnswer);
                 }
             }
         }
